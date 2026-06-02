@@ -13,6 +13,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  Pressable
 } from 'react-native';
 import { useTheme } from '@/context/ThemeContext';
 
@@ -62,7 +63,7 @@ const SignupScreen = () => {
           <View style={[styles.logoCircle, { backgroundColor: colors.surface, borderColor: colors.border }]}>
             <Text style={[styles.logoText, { color: colors.text }]}>S360</Text>
           </View>
-          <Text style={[styles.appName, { color: colors.text }]}>Shop360°</Text>
+          <Text style={[styles.appName, { color: colors.text }]}>APEX</Text>
         </View>
 
         <Text style={[styles.welcomeText, { color: colors.text }]}>Create Account</Text>
@@ -142,12 +143,12 @@ const SignupScreen = () => {
           </View>
         </View>
 
-        <TouchableOpacity 
-          style={[styles.signupButton, { backgroundColor: colors.primary }]} 
+        <Pressable 
+          style={({ pressed }) => [styles.signupButton, { backgroundColor: colors.primary, transform: [{ scale: pressed ? 0.97 : 1 }] }]} 
           onPress={handleSignup}
         >
           <Text style={[styles.signupButtonText, { color: colors.background }]}>Create Account</Text>
-        </TouchableOpacity>
+        </Pressable>
 
         <View style={styles.loginContainer}>
           <Text style={[styles.loginText, { color: colors.textSecondary }]}>Already have an account? </Text>
@@ -186,15 +187,15 @@ const styles = StyleSheet.create({
   },
   appName: {
     fontSize: 24,
-    fontWeight: '600',
-    letterSpacing: 0.5,
+    fontFamily: 'PlayfairDisplay_600SemiBold',
+    letterSpacing: -0.5,
   },
   welcomeText: {
-    fontSize: 28,
-    fontWeight: '600',
+    fontSize: 32,
+    fontFamily: 'PlayfairDisplay_600SemiBold',
+    letterSpacing: -0.5,
     marginBottom: 8,
     marginTop: 20,
-    letterSpacing: 0.5,
   },
   subtitleText: {
     fontSize: 16,
@@ -214,7 +215,7 @@ const styles = StyleSheet.create({
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 12,
+    borderRadius: 8,
     borderWidth: 1,
     marginBottom: 16,
     paddingHorizontal: 16,

@@ -219,12 +219,13 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontSize: 24,
-    fontWeight: '700',
+    fontFamily: 'PlayfairDisplay_600SemiBold',
+    letterSpacing: -0.5,
     marginBottom: 4,
   },
   userEmail: {
     fontSize: 14,
-    fontWeight: '400',
+    fontFamily: 'Inter_400Regular',
   },
   statsContainer: {
     flexDirection: 'row',
@@ -236,28 +237,27 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 6,
     padding: 16,
-    borderRadius: 12,
+    borderRadius: 16,
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 3,
+    shadowColor: '#0A6B4B',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
+    elevation: 2,
+    borderWidth: 1,
+    borderColor: '#E0EDE8',
   },
   statIcon: {
     marginBottom: 8,
   },
   statNumber: {
     fontSize: 20,
-    fontWeight: '600',
+    fontFamily: 'Inter_600SemiBold',
     marginBottom: 4,
   },
   statLabel: {
     fontSize: 12,
-    fontWeight: '500',
+    fontFamily: 'Inter_500Medium',
   },
   menuContainer: {
     paddingHorizontal: 20,
@@ -269,6 +269,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 16,
     borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#E0EDE8',
   },
   menuItemLeft: {
     flexDirection: 'row',
@@ -288,12 +290,12 @@ const styles = StyleSheet.create({
   },
   menuItemTitle: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: 'Inter_600SemiBold',
     marginBottom: 2,
   },
   menuItemSubtitle: {
     fontSize: 12,
-    fontWeight: '400',
+    fontFamily: 'Inter_400Regular',
   },
   logoutButton: {
     flexDirection: 'row',

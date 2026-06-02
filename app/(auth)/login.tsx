@@ -11,7 +11,8 @@ import {
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
+  Pressable
 } from 'react-native';
 import { useAuth } from '@/context/AuthContext';
 import { useTheme } from '@/context/ThemeContext';
@@ -46,10 +47,10 @@ const LoginScreen = () => {
           <View style={[styles.logoCircle, { backgroundColor: colors.surface, borderColor: colors.border }]}>
             <Text style={[styles.logoText, { color: colors.text }]}>S360</Text>
           </View>
-          <Text style={[styles.appName, { color: colors.text }]}>Shop360°</Text>
+          <Text style={[styles.appName, { color: colors.text }]}>APEX</Text>
         </View>
 
-        <Text style={[styles.welcomeText, { color: colors.text }]}>Welcome to Shop360°</Text>
+        <Text style={[styles.welcomeText, { color: colors.text }]}>Welcome to APEX</Text>
         <Text style={[styles.subtitleText, { color: colors.textSecondary }]}>Sign in to your account</Text>
 
         <View style={styles.inputContainer}>
@@ -104,12 +105,12 @@ const LoginScreen = () => {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity 
-          style={[styles.loginButton, { backgroundColor: colors.primary }]} 
+        <Pressable 
+          style={({ pressed }) => [styles.loginButton, { backgroundColor: colors.primary, transform: [{ scale: pressed ? 0.97 : 1 }] }]} 
           onPress={handleLogin}
         >
           <Text style={[styles.loginButtonText, { color: colors.background }]}>Sign In</Text>
-        </TouchableOpacity>
+        </Pressable>
 
         <View style={styles.dividerContainer}>
           <View style={[styles.divider, { backgroundColor: colors.border }]} />
@@ -118,10 +119,10 @@ const LoginScreen = () => {
         </View>
 
         <View style={styles.socialLoginContainer}>
-          <TouchableOpacity style={[styles.socialButton, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <Pressable style={({ pressed }) => [styles.socialButton, { backgroundColor: colors.surface, borderColor: colors.border, transform: [{ scale: pressed ? 0.97 : 1 }] }]}>
             <Ionicons name="logo-google" size={20} color={colors.textSecondary} />
             <Text style={[styles.socialButtonText, { color: colors.text }]}>Google</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
         <View style={styles.signupContainer}>
@@ -161,15 +162,15 @@ const styles = StyleSheet.create({
   },
   appName: {
     fontSize: 24,
-    fontWeight: '600',
-    letterSpacing: 0.5,
+    fontFamily: 'PlayfairDisplay_600SemiBold',
+    letterSpacing: -0.5,
   },
   welcomeText: {
-    fontSize: 28,
-    fontWeight: '600',
+    fontSize: 32,
+    fontFamily: 'PlayfairDisplay_600SemiBold',
+    letterSpacing: -0.5,
     marginBottom: 8,
     marginTop: 20,
-    letterSpacing: 0.5,
   },
   subtitleText: {
     fontSize: 16,
@@ -189,7 +190,7 @@ const styles = StyleSheet.create({
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 12,
+    borderRadius: 8,
     borderWidth: 1,
     marginBottom: 16,
     paddingHorizontal: 16,

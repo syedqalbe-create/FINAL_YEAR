@@ -1,9 +1,9 @@
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../context/ThemeContext';
-import { Platform, View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { Platform, View, Text, TouchableOpacity, Dimensions, Animated } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 
 const { width: screenWidth } = Dimensions.get('window');
@@ -13,7 +13,15 @@ const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => 
   const insets = useSafeAreaInsets();
   
   const tabWidth = screenWidth / state.routes.length;
-  const circleRadius = 20;
+  const [translateX] = useState(new Animated.Value(state.index * tabWidth));
+
+  useEffect(() => {
+    Animated.spring(translateX, {
+      toValue: state.index * tabWidth,
+      stiffness: 200,
+      useNativeDriver: true,
+    }).start();
+  }, [state.index, tabWidth]);
 
   return (
     <View style={{
@@ -21,10 +29,23 @@ const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => 
       backgroundColor: colors.background,
       height: 70 + (Platform.OS === 'ios' ? insets.bottom : 0),
       paddingBottom: Platform.OS === 'ios' ? insets.bottom : 8,
-      borderTopWidth: 0.5,
+      borderTopWidth: 1,
       borderTopColor: colors.border,
       position: 'relative',
     }}>
+      <Animated.View
+        style={{
+          position: 'absolute',
+          bottom: Platform.OS === 'ios' ? insets.bottom + 10 : 18,
+          left: (tabWidth - 24) / 2,
+          width: 24,
+          height: 2,
+          borderRadius: 1,
+          backgroundColor: colors.primary,
+          transform: [{ translateX }],
+          zIndex: 1,
+        }}
+      />
       {/* Tab buttons */}
       {state.routes.map((route: any, index: number) => {
         const { options } = descriptors[route.key];
@@ -83,54 +104,22 @@ const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => 
               position: 'relative',
             }}
           >
-            {/* Floating circle for active tab */}
-            {isFocused && (
-              <View
-                style={{
-                  position: 'absolute',
-                  top: -12,
-                  width: circleRadius * 2,
-                  height: circleRadius * 2,
-                  borderRadius: circleRadius,
-                  backgroundColor: colors.primary,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.15,
-                  shadowRadius: 4,
-                  elevation: 4,
-                }}
-              >
-                <Ionicons
-                  name={getIconName()}
-                  size={20}
-                  color={colors.background}
-                />
-              </View>
-            )}
-            
-            {/* Regular icon for inactive tabs */}
-            {!isFocused && (
-              <Ionicons
-                name={getIconName()}
-                size={22}
-                color={colors.textSecondary}
-                style={{ marginBottom: 4 }}
-              />
-            )}
+            <Ionicons
+              name={getIconName()}
+              size={24}
+              color={isFocused ? colors.primary : colors.textMuted}
+              style={{ marginBottom: 4 }}
+            />
             
             {/* Label */}
             <Text
               style={{
                 fontSize: 11,
-                fontWeight: isFocused ? '600' : '500',
-                color: isFocused ? colors.primary : colors.textSecondary,
-                marginTop: isFocused ? 16 : 4,
-                opacity: isFocused ? 1 : 0.8,
+                fontFamily: 'Inter_500Medium',
+                textTransform: 'uppercase',
+                letterSpacing: 1.5,
+                color: isFocused ? colors.primary : colors.textMuted,
+                marginTop: 2,
               }}
             >
               {getTitle()}

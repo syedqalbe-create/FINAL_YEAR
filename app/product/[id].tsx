@@ -11,6 +11,7 @@ import {
   StatusBar,
   Animated,
   Modal,
+  Pressable,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, router } from 'expo-router';
@@ -174,8 +175,8 @@ export default function ProductDetailScreen() {
           {product.title}
         </Text>
         
-        <TouchableOpacity 
-          style={[styles.headerButton, { backgroundColor: colors.surface }]}
+        <Pressable 
+          style={({ pressed }) => [styles.headerButton, { backgroundColor: colors.surface, transform: [{ scale: pressed ? 0.97 : 1 }] }]}
           onPress={toggleWishlist}
         >
           <Ionicons 
@@ -183,7 +184,7 @@ export default function ProductDetailScreen() {
             size={24} 
             color={isWishlisted ? colors.primary : colors.text} 
           />
-        </TouchableOpacity>
+        </Pressable>
       </View>
       
       <ScrollView 
@@ -266,14 +267,19 @@ export default function ProductDetailScreen() {
 
           <Text style={[styles.title, { color: colors.text }]}>{product.title}</Text>
           
-          <Text style={[styles.price, { color: colors.text }]}>
-            ${product.price}{' '}
-            {product.discountPercentage > 0 && (
-              <Text style={[styles.originalPrice, { color: colors.textSecondary }]}>
-                ${Math.round(product.price / (1 - product.discountPercentage / 100))}
-              </Text>
-            )}
-          </Text>
+          <View style={styles.priceRow}>
+            <Text style={[styles.price, { color: colors.primary }]}>
+              ${product.price}{' '}
+              {product.discountPercentage > 0 && (
+                <Text style={[styles.originalPrice, { color: colors.textSecondary }]}>
+                  ${Math.round(product.price / (1 - product.discountPercentage / 100))}
+                </Text>
+              )}
+            </Text>
+            <View style={[styles.arBadge, { backgroundColor: colors.accent }]}>
+              <Text style={[styles.arBadgeText, { color: colors.primary }]}>AR View</Text>
+            </View>
+          </View>
 
           <Text style={[styles.stockInfo, { color: colors.textSecondary }]}>
             {product.stock > 0 ? `In Stock (${product.stock})` : 'Out of Stock'}
@@ -285,21 +291,21 @@ export default function ProductDetailScreen() {
       </ScrollView>
 
       <View style={[styles.footer, { backgroundColor: colors.background, borderTopColor: colors.border }]}>
-        <TouchableOpacity 
-          style={[styles.arButton, { backgroundColor: colors.surface }]} 
+        <Pressable 
+          style={({ pressed }) => [styles.arButton, { backgroundColor: colors.secondary, transform: [{ scale: pressed ? 0.97 : 1 }] }]} 
           onPress={() => {}}
         >
-          <Ionicons name="cube-outline" size={20} color={colors.text} />
-          <Text style={[styles.arButtonText, { color: colors.text }]}>View in AR</Text>
-        </TouchableOpacity>
+          <Ionicons name="cube-outline" size={20} color={'#FFFFFF'} />
+          <Text style={[styles.arButtonText, { color: '#FFFFFF' }]}>View in AR</Text>
+        </Pressable>
         
-        <TouchableOpacity 
-          style={[styles.addToCartButton, { backgroundColor: colors.primary }]} 
+        <Pressable 
+          style={({ pressed }) => [styles.addToCartButton, { backgroundColor: colors.primary, transform: [{ scale: pressed ? 0.97 : 1 }] }]} 
           onPress={() => {}}
         >
-          <Ionicons name="cart-outline" size={20} color={colors.background} />
-          <Text style={[styles.addToCartButtonText, { color: colors.background }]}>Add to Cart</Text>
-        </TouchableOpacity>
+          <Ionicons name="cart-outline" size={20} color={'#FFFFFF'} />
+          <Text style={[styles.addToCartButtonText, { color: '#FFFFFF' }]}>Add to Cart</Text>
+        </Pressable>
       </View>
 
       <Modal
@@ -401,8 +407,9 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     flex: 1,
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: 20,
+    fontFamily: 'PlayfairDisplay_600SemiBold',
+    letterSpacing: -0.5,
     textAlign: 'center',
     marginHorizontal: 12,
   },
@@ -471,20 +478,37 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   title: {
-    fontSize: 20,
-    fontWeight: '600',
+    fontSize: 24,
+    fontFamily: 'PlayfairDisplay_600SemiBold',
+    letterSpacing: -0.5,
     marginBottom: 12,
-    lineHeight: 26,
+    lineHeight: 30,
   },
-  price: {
-    fontSize: 18,
-    fontWeight: '700',
+  priceRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 6,
   },
+  price: {
+    fontSize: 22,
+    fontFamily: 'Inter_600SemiBold',
+  },
   originalPrice: {
-    fontSize: 14,
-    fontWeight: '400',
+    fontSize: 16,
+    fontFamily: 'Inter_400Regular',
     textDecorationLine: 'line-through',
+  },
+  arBadge: {
+    borderRadius: 50,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+  },
+  arBadgeText: {
+    fontSize: 11,
+    letterSpacing: 1.2,
+    textTransform: 'uppercase',
+    fontFamily: 'Inter_600SemiBold',
   },
   stockInfo: {
     fontSize: 13,
@@ -515,31 +539,37 @@ const styles = StyleSheet.create({
   },
   arButton: {
     flex: 1,
-    borderRadius: 8,
+    borderRadius: 12,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 12,
+    paddingVertical: 16,
     gap: 6,
     elevation: 2,
+    shadowColor: '#0A6B4B',
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
   },
   arButtonText: {
-    fontSize: 13,
-    fontWeight: '600',
+    fontSize: 14,
+    fontFamily: 'Inter_600SemiBold',
   },
   addToCartButton: {
     flex: 2,
-    borderRadius: 8,
+    borderRadius: 12,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 12,
+    paddingVertical: 16,
     gap: 6,
     elevation: 4,
+    shadowColor: '#0A6B4B',
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
   },
   addToCartButtonText: {
     fontSize: 14,
-    fontWeight: '700',
+    fontFamily: 'Inter_600SemiBold',
   },
   navButton: {
     position: 'absolute',

@@ -2,7 +2,7 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import React from 'react';
-import { Dimensions, ScrollView, StyleSheet, TouchableOpacity, View, StatusBar, SafeAreaView } from 'react-native';
+import { Dimensions, ScrollView, StyleSheet, TouchableOpacity, View, StatusBar, Animated, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/ThemedText';
@@ -23,6 +23,7 @@ interface FeaturedProductProps {
   title: string;
   image: string;
   price: string;
+  index?: number;
 }
 
 // Minimal feature section component
@@ -31,7 +32,8 @@ const FeatureSection = ({ title, description, iconType, sfIconName, ionIconName 
   return (
     <View style={[styles.featureCard, { 
       backgroundColor: colors.surface,
-      borderColor: colors.border 
+      borderColor: colors.border,
+      shadowColor: colors.primary
     }]}>
       <View style={[styles.featureIconContainer, { 
         backgroundColor: isDark ? colors.primary : '#FFFFFF',
@@ -58,19 +60,42 @@ const FeatureSection = ({ title, description, iconType, sfIconName, ionIconName 
 };
 
 // Featured product component
-const FeaturedProduct = ({ title, image, price }: FeaturedProductProps) => {
+const FeaturedProduct = ({ title, image, price, index = 0 }: FeaturedProductProps) => {
   const { colors } = useTheme();
+  const fadeAnim = React.useRef(new Animated.Value(0)).current;
+  const translateY = React.useRef(new Animated.Value(12)).current;
+
+  React.useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 400,
+        delay: index * 60,
+        useNativeDriver: true,
+      }),
+      Animated.timing(translateY, {
+        toValue: 0,
+        duration: 400,
+        delay: index * 60,
+        useNativeDriver: true,
+      })
+    ]).start();
+  }, [fadeAnim, translateY, index]);
+
   return (
-    <TouchableOpacity 
-      style={[styles.featuredProductCard, { backgroundColor: colors.surface }]} 
-      onPress={() => router.push('/(tabs)/products')}
-    >
-      <Image source={{ uri: image }} style={styles.featuredProductImage} />
-      <View style={styles.featuredProductInfo}>
-        <ThemedText type="defaultSemiBold" style={[styles.featuredProductTitle, { color: colors.text }]}>{title}</ThemedText>
-        <ThemedText style={[styles.featuredProductPrice, { color: colors.primary }]}>{price}</ThemedText>
-      </View>
-    </TouchableOpacity>
+    <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY }] }}>
+      <TouchableOpacity 
+        style={[styles.featuredProductCard, { backgroundColor: colors.surface }]} 
+        onPress={() => router.push('/(tabs)/products')}
+        activeOpacity={0.9}
+      >
+        <Image source={{ uri: image }} style={styles.featuredProductImage} />
+        <View style={styles.featuredProductInfo}>
+          <ThemedText type="defaultSemiBold" style={[styles.featuredProductTitle, { color: colors.text }]}>{title}</ThemedText>
+          <ThemedText style={[styles.featuredProductPrice, { color: colors.primary }]}>{price}</ThemedText>
+        </View>
+      </TouchableOpacity>
+    </Animated.View>
   );
 };
 
@@ -93,7 +118,8 @@ export default function HomeScreen() {
         <View style={styles.header}>
           <View>
             <ThemedText type="title" style={[styles.welcomeText, { color: colors.textSecondary }]}>Welcome to</ThemedText>
-            <ThemedText type="title" style={[styles.appName, { color: colors.text }]}>Shop360°</ThemedText>
+            <ThemedText type="title" style={[styles.appName, { color: colors.text }]}>Vision AR</ThemedText>
+            <View style={[styles.goldUnderline, { backgroundColor: colors.secondary }]} />
           </View>
           <TouchableOpacity 
             style={[styles.profileButton, { 
@@ -109,23 +135,27 @@ export default function HomeScreen() {
         {/* Banner */}
         <View style={[styles.bannerContainer, { borderColor: colors.border }]}>
           <Image 
-            source={{ uri: 'https://images.ctfassets.net/wp1lcwdav1p1/2bzxvC8K1Cv0OMSQEA7p9l/eaa3de48c71d61a4a7d9c064d7235db6/GettyImages-1351925376.jpg?w=1500&h=680&q=60&fit=fill&f=faces&fm=jpg&fl=progressive' }} 
+            source={{ uri: 'https://images.unsplash.com/photo-1634986666676-ec8fd927c23d?w=1200&q=80' }} 
             style={styles.bannerImage}
           />
-          <View style={[styles.bannerOverlay, { backgroundColor: 'rgba(0,0,0,0.6)' }]}>
+          <View style={[styles.bannerOverlay, { backgroundColor: 'rgba(15, 14, 23, 0.65)' }]}>
             <ThemedText type="title" style={styles.bannerTitle}>View in AR</ThemedText>
             <ThemedText style={styles.bannerSubtitle}>Experience products in your space</ThemedText>
-            <TouchableOpacity 
-              style={[styles.bannerButton, { 
-                backgroundColor: isDark ? colors.primary : '#FFFFFF',
-                borderColor: colors.border
-              }]} 
+            <Pressable 
+              style={({ pressed }) => [
+                styles.bannerButton, 
+                { 
+                  backgroundColor: isDark ? colors.primary : '#FFFFFF',
+                  borderColor: colors.border,
+                  transform: [{ scale: pressed ? 0.97 : 1 }]
+                }
+              ]} 
               onPress={() => router.push('/(tabs)/products')}
             >
               <ThemedText style={[styles.bannerButtonText, { 
                 color: isDark ? colors.background : colors.primary 
               }]}>Explore Now</ThemedText>
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
 
@@ -136,20 +166,20 @@ export default function HomeScreen() {
         
         <View style={styles.featuresContainer}>
           <FeatureSection 
-            title="AR Experience" 
-            description="Try products in your space" 
+            title="AR Viewer" 
+            description="See it before you buy" 
             iconType="ionicon"
             ionIconName="cube-outline"
           />
           <FeatureSection 
-            title="Precise Details" 
-            description="Exact dimensions and specs" 
+            title="3D Scan" 
+            description="Photorealistic models" 
             iconType="ionicon"
             ionIconName="scan-outline"
           />
           <FeatureSection 
-            title="Smart Shopping" 
-            description="Intelligent recommendations" 
+            title="AI Pick" 
+            description="Your style, curated" 
             iconType="ionicon"
             ionIconName="sparkles-outline"
           />
@@ -170,19 +200,22 @@ export default function HomeScreen() {
           contentContainerStyle={styles.featuredProductsContent}
         >
           <FeaturedProduct 
-            title="Wireless Headphones" 
-            image="https://pcstore.pk/wp-content/uploads/2024/01/Sony-WH-CH520-Wireless-Headphones-with-Microphone-_price-in-pakistan-Black-img1-min.png" 
-            price="$129.99" 
+            title="ANC Headphones" 
+            image="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80" 
+            price="$189.99" 
+            index={0}
           />
           <FeaturedProduct 
-            title="Smart Watch" 
-            image="https://images.samsung.com/is/image/samsung/p6pim/pk/sm-l310nzg8eua/gallery/pk-galaxy-watch7-l310-sm-l310nzg8eua-thumb-544769007?$UX_EXT2_PNG$" 
-            price="$249.99" 
+            title="Smart Watch Pro" 
+            image="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80" 
+            price="$299.99" 
+            index={1}
           />
           <FeaturedProduct 
-            title="Bluetooth Speaker" 
-            image="https://cdn.thewirecutter.com/wp-content/media/2024/11/portablebluetoothspeakers-2048px-9481.jpg?auto=webp&quality=75&width=1024" 
-            price="$79.99" 
+            title="Studio Speaker" 
+            image="https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600&q=80" 
+            price="$119.99" 
+            index={2}
           />
         </ScrollView>
       </ScrollView>
@@ -218,19 +251,25 @@ const styles = StyleSheet.create({
   appName: {
     fontSize: 28,
   },
+  goldUnderline: {
+    width: 40,
+    height: 3,
+    marginTop: 4,
+    borderRadius: 2,
+  },
   profileButton: {
     width: 44,
     height: 44,
-    borderRadius: 22,
+    borderRadius: 14,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
   },
   bannerContainer: {
     marginHorizontal: 20,
-    borderRadius: 16,
+    borderRadius: 20,
     overflow: 'hidden',
-    height: 200,
+    height: 220,
     marginBottom: 32,
     position: 'relative',
     borderWidth: 1,
@@ -293,10 +332,13 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 18,
     marginHorizontal: 6,
-    borderRadius: 16,
+    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
+    shadowOpacity: 0.08,
+    shadowRadius: 16,
+    elevation: 3,
   },
   featureIconContainer: {
     width: 48,
@@ -324,7 +366,7 @@ const styles = StyleSheet.create({
   featuredProductCard: {
     width: width * 0.6,
     marginRight: 16,
-    borderRadius: 16,
+    borderRadius: 20,
     overflow: 'hidden',
     borderWidth: 1,
   },

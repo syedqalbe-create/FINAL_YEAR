@@ -142,7 +142,11 @@ const ProductListScreen = () => {
 
   const renderCategoryCard = ({ item }: { item: Category }) => (
     <TouchableOpacity 
-      style={[styles.categoryCard, { backgroundColor: colors.surface }]}
+      style={[styles.categoryCard, { 
+        backgroundColor: colors.surface,
+        borderColor: colors.border,
+        shadowColor: colors.primary
+      }]}
       onPress={() => setSelectedCategory(item.name)}
       activeOpacity={0.8}
     >
@@ -168,7 +172,11 @@ const ProductListScreen = () => {
 
     return (
       <TouchableOpacity 
-        style={[styles.productCard, { backgroundColor: colors.surface }]}
+        style={[styles.productCard, { 
+          backgroundColor: colors.surface,
+          borderColor: colors.border,
+          shadowColor: colors.primary
+        }]}
         onPress={() => router.push({
           pathname: "/product/[id]",
           params: { id: item.id.toString() }
@@ -181,7 +189,7 @@ const ProductListScreen = () => {
             style={styles.productImage}
           />
           {item.discountPercentage > 0 && (
-            <View style={styles.discountBadge}>
+            <View style={[styles.discountBadge, { backgroundColor: colors.secondary }]}>
               <Text style={styles.discountText}>{Math.round(item.discountPercentage)}%</Text>
             </View>
           )}
@@ -207,7 +215,7 @@ const ProductListScreen = () => {
           </View>
           
           <View style={styles.ratingContainer}>
-            <Ionicons name="star" size={14} color="#FFD700" />
+            <Ionicons name="star" size={14} color={colors.secondary} />
             <Text style={[styles.ratingText, { color: colors.textSecondary }]}>
               {item.rating?.toFixed(1) || '0.0'}
             </Text>
@@ -251,7 +259,7 @@ const ProductListScreen = () => {
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
         <View style={styles.centeredContainer}>
-          <Ionicons name="alert-circle" size={48} color="#FF3B30" />
+          <Ionicons name="alert-circle" size={48} color={colors.error} />
           <Text style={[styles.errorText, { color: colors.text }]}>{error}</Text>
           <TouchableOpacity 
             style={[styles.retryButton, { backgroundColor: colors.primary }]}
@@ -283,7 +291,11 @@ const ProductListScreen = () => {
       )}
 
       {selectedCategory && (
-        <View style={[styles.searchContainer, { backgroundColor: colors.surface }]}>
+        <View style={[styles.searchContainer, { 
+          backgroundColor: colors.surface,
+          borderColor: colors.border,
+          borderWidth: 1
+        }]}>
           <Ionicons name="search" size={20} color={colors.textSecondary} style={styles.searchIcon} />
           <TextInput
             style={[styles.searchInput, { color: colors.text }]}
@@ -339,7 +351,7 @@ const styles = StyleSheet.create({
   headerButton: {
     width: 44,
     height: 44,
-    borderRadius: 22,
+    borderRadius: 14,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
@@ -350,8 +362,9 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   headerTitle: {
-    fontSize: 22,
-    fontWeight: '700',
+    fontSize: 24,
+    fontFamily: 'PlayfairDisplay_600SemiBold',
+    letterSpacing: -0.5,
     flex: 1,
   },
   searchContainer: {
@@ -361,7 +374,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     paddingHorizontal: 16,
     paddingVertical: 14,
-    borderRadius: 16,
+    borderRadius: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
@@ -402,11 +415,11 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     aspectRatio: 1,
     marginBottom: 16,
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    elevation: 6,
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    elevation: 2,
+    borderWidth: 1,
   },
   categoryImage: {
     width: '100%',
@@ -419,10 +432,10 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     padding: 15,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: 'rgba(15, 14, 23, 0.55)',
   },
   categoryName: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '700',
     color: '#FFF',
     marginBottom: 4,
@@ -438,15 +451,18 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     overflow: 'hidden',
     marginBottom: 16,
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.12,
-    shadowRadius: 8,
-    elevation: 5,
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    elevation: 2,
+    borderWidth: 1,
   },
   imageContainer: {
     position: 'relative',
-    aspectRatio: 1,
+    aspectRatio: 4/3,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    overflow: 'hidden',
   },
   productImage: {
     width: '100%',
@@ -457,10 +473,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 12,
     right: 12,
-    backgroundColor: '#FF3B30',
     paddingHorizontal: 10,
     paddingVertical: 6,
-    borderRadius: 16,
+    borderRadius: 8,
   },
   discountText: {
     color: '#FFF',
@@ -472,15 +487,15 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   brandText: {
-    fontSize: 12,
-    fontWeight: '500',
+    fontSize: 10,
+    fontFamily: 'Inter_500Medium',
     marginBottom: 6,
     textTransform: 'uppercase',
-    letterSpacing: 0.5,
+    letterSpacing: 2,
   },
   productTitle: {
     fontSize: 15,
-    fontWeight: '600',
+    fontFamily: 'Inter_600SemiBold',
     lineHeight: 20,
     marginBottom: 12,
   },
@@ -517,9 +532,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 12,
     right: 12,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 44,
+    height: 44,
+    borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',

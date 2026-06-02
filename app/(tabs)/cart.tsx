@@ -1,7 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
-import { Image, Platform, ScrollView, StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, Platform, ScrollView, StatusBar, StyleSheet, TouchableOpacity, View, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/ThemedText';
@@ -131,12 +131,12 @@ export default function CartScreen() {
           <ThemedText style={[styles.totalValue, { color: colors.text }]}>${total.toFixed(2)}</ThemedText>
         </View>
 
-        <TouchableOpacity 
-          style={[styles.checkoutButton, { backgroundColor: colors.primary }]}
+        <Pressable 
+          style={({ pressed }) => [styles.checkoutButton, { backgroundColor: colors.primary, transform: [{ scale: pressed ? 0.97 : 1 }] }]}
           onPress={() => router.push('/(tabs)')}
         >
           <ThemedText style={[styles.checkoutButtonText, { color: colors.background }]}>Proceed to Checkout</ThemedText>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </View>
   );
@@ -156,12 +156,14 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   headerTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+    fontSize: 28,
+    fontFamily: 'PlayfairDisplay_600SemiBold',
+    letterSpacing: -0.5,
     marginBottom: 4,
   },
   itemCount: {
     fontSize: 14,
+    fontFamily: 'Inter_400Regular',
   },
   cartList: {
     flex: 1,
@@ -173,15 +175,16 @@ const styles = StyleSheet.create({
   },
   cartItem: {
     flexDirection: 'row',
-    borderRadius: 12,
+    borderRadius: 16,
     padding: 16,
     marginBottom: 16,
     borderWidth: 1,
+    borderColor: '#E0EDE8',
     elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
+    shadowColor: '#0A6B4B',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
   },
   cartItemImage: {
     width: 90,
@@ -195,11 +198,12 @@ const styles = StyleSheet.create({
   },
   cartItemName: {
     fontSize: 15,
-    fontWeight: '500',
+    fontFamily: 'Inter_600SemiBold',
     marginBottom: 4,
   },
   cartItemPrice: {
     fontSize: 15,
+    fontFamily: 'Inter_400Regular',
     marginBottom: 8,
   },
   quantityContainer: {
@@ -252,11 +256,11 @@ const styles = StyleSheet.create({
   },
   totalLabel: {
     fontSize: 17,
-    fontWeight: '600',
+    fontFamily: 'Inter_600SemiBold',
   },
   totalValue: {
     fontSize: 17,
-    fontWeight: '600',
+    fontFamily: 'Inter_600SemiBold',
   },
   checkoutButton: {
     borderRadius: 12,
@@ -264,13 +268,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
     elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
+    shadowColor: '#0A6B4B',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
   },
   checkoutButtonText: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: 'Inter_600SemiBold',
   },
 });

@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Shop360",
-    "slug": "Shop360",
+    "name": "APEX",
+    "slug": "APEX",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "shop360",
+    "scheme": "apex",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "statusBar": {
@@ -20,7 +20,7 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.azeem70131514.Shop360"
+      "package": "com.azeem70131514.APEX"
     },
     "web": {
       "bundler": "metro",

@@ -68,7 +68,7 @@ const HelpSupportScreen = () => {
     {
       id: '2',
       title: 'Email Support',
-      description: 'support@shop360.com',
+      description: 'support@apex.com',
       icon: 'mail-outline',
       action: () => {
         // Implement email support
@@ -194,14 +194,17 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: '600',
+    fontSize: 24,
+    fontFamily: 'PlayfairDisplay_600SemiBold',
+    letterSpacing: -0.5,
     marginBottom: 16,
   },
   faqItem: {
     borderRadius: 16,
     marginBottom: 12,
     overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#E0EDE8',
   },
   faqHeader: {
     flexDirection: 'row',
@@ -229,6 +232,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#E0EDE8',
   },
   iconContainer: {
     width: 48,
@@ -255,14 +260,18 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 16,
     gap: 12,
+    borderWidth: 1,
+    borderColor: '#E0EDE8',
   },
   messageInput: {
     flex: 1,
     minHeight: 80,
-    borderRadius: 12,
+    borderRadius: 8,
     padding: 12,
     fontSize: 14,
     textAlignVertical: 'top',
+    borderWidth: 1,
+    borderColor: '#E0EDE8',
   },
   sendButton: {
     width: 40,
